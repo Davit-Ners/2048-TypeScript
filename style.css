@@ -1,0 +1,29 @@
+.game-container {
+    width: 500px;
+    height: 500px;
+    background-color: rgb(116, 119, 119);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.row {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.blockVide {
+    width: 100px;
+    height: 100px;
+    background-color: rgb(252, 252, 252);
+}
+
+.block {
+    width: 100px;
+    height: 100px;
+    background-color: rgb(234, 236, 100);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: xx-large;
+}

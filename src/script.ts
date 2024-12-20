@@ -61,26 +61,40 @@ function generateTabObj() {
     }
 }
 
-function deplacerBas(): void {
+function modifierTab(row: number, block: number, contains?: number, isVide?: boolean): void {
+    tabObj[row][block].isVide = isVide ?? true;
+    tabObj[row][block].containsNumber = contains ?? 0
+}
+
+function deplacer(callback: (row: number, block: number) => boolean): void {
+    gameContainer.innerHTML = '';
     let recommencer: number = 1;
     while (recommencer > 0) {
         recommencer = 0;
         for (let row = 0; row < 4; row++) {
             for (let block = 0; block < 4; block++) {
-                if (row < 3 && tabObj[row + 1][block].isVide) {
+                if (callback(row, block)) {
                     tabObj[row + 1][block].containsNumber = tabObj[row][block].containsNumber;
-                    tabObj[row + 1][block].isVide = tabObj[row][block].isVide;
+                    tabObj[row + 1][block].isVide = false;
                     tabObj[row][block].isVide = true;
+                    tabObj[row][block].containsNumber = 0;
                     recommencer++;
                 }
             }
         }
     }
+    generateGrid();
+}
+
+function deplacerBas(row: number, block: number): boolean {
+    return row < 3 && tabObj[row + 1][block].isVide && !(tabObj[row][block].isVide);
 }
 
 
 
 generateTabObj();
-tabObj[0][2].isVide = false;
-tabObj[0][2].containsNumber = 2;
+modifierTab(0, 2, 2, false)
+modifierTab(1, 3, 2, false)
+modifierTab(2, 1, 2, false)
+modifierTab(2, 2, 2, false)
 generateGrid();

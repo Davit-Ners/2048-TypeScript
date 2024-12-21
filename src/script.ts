@@ -66,7 +66,7 @@ function modifierTab(row: number, block: number, contains?: number, isVide?: boo
     tabObj[row][block].containsNumber = contains ?? 0
 }
 
-function deplacer(callback: (row: number, block: number) => boolean): void {
+function deplacer(callback: (row: number, block: number) => boolean, y: number, x: number): void {
     gameContainer.innerHTML = '';
     let recommencer: number = 1;
     while (recommencer > 0) {
@@ -74,8 +74,8 @@ function deplacer(callback: (row: number, block: number) => boolean): void {
         for (let row = 0; row < 4; row++) {
             for (let block = 0; block < 4; block++) {
                 if (callback(row, block)) {
-                    tabObj[row + 1][block].containsNumber = tabObj[row][block].containsNumber;
-                    tabObj[row + 1][block].isVide = false;
+                    tabObj[row + y][block + x].containsNumber = tabObj[row][block].containsNumber;
+                    tabObj[row + y][block + x].isVide = false;
                     tabObj[row][block].isVide = true;
                     tabObj[row][block].containsNumber = 0;
                     recommencer++;
@@ -86,11 +86,36 @@ function deplacer(callback: (row: number, block: number) => boolean): void {
     generateGrid();
 }
 
-function deplacerBas(row: number, block: number): boolean {
+function dirBas(row: number, block: number): boolean {
     return row < 3 && tabObj[row + 1][block].isVide && !(tabObj[row][block].isVide);
 }
 
+function dirHaut(row: number, block: number): boolean {
+    return row > 0 && tabObj[row - 1][block].isVide && !(tabObj[row][block].isVide);
+}
 
+function dirGauche(row: number, block: number): boolean {
+    return block > 0 && tabObj[row][block - 1].isVide && !(tabObj[row][block].isVide);
+}
+
+function dirDroit(row: number, block: number): boolean {
+    return block < 3 && tabObj[row][block + 1].isVide && !(tabObj[row][block].isVide);
+}
+
+function whichKey(event: KeyboardEvent): void {
+    if (event.key === 'ArrowUp') {
+        deplacer(dirHaut, -1, 0);
+    }
+    else if (event.key === 'ArrowDown') {
+        deplacer(dirBas, 1, 0);
+    }
+    else if (event.key === 'ArrowLeft') {
+        deplacer(dirGauche, 0, -1);
+    }
+    else if (event.key === 'ArrowRight') {
+        deplacer(dirDroit, 0, 1);
+    }
+}
 
 generateTabObj();
 modifierTab(0, 2, 2, false)
@@ -98,3 +123,5 @@ modifierTab(1, 3, 2, false)
 modifierTab(2, 1, 2, false)
 modifierTab(2, 2, 2, false)
 generateGrid();
+
+window.addEventListener('keyup', whichKey);

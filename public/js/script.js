@@ -71,6 +71,8 @@ function modifierTab(row, block, contains, isVide) {
 function deplacer(callback, y, x) {
     gameContainer.innerHTML = "";
     let recommencer = 1;
+    let deplacement = false;
+    let addition = [];
     while (recommencer > 0) {
         recommencer = 0;
         for (let row = 0; row < 4; row++) {
@@ -87,20 +89,24 @@ function deplacer(callback, y, x) {
                     tabObj[row][block].containsNumber = 0;
                     recommencer++;
                     console.log("PLUS");
+                    deplacement = true;
                 }
                 else if (callback(row, block)) {
                     tabObj[row + y][block + x].containsNumber = tabObj[row][block].containsNumber;
                     tabObj[row + y][block + x].isVide = false;
+                    tabRandom = tabRandom.filter(item => item[0] !== row + y || item[1] !== block + x);
                     tabObj[row][block].isVide = true;
                     tabRandom.push([row, block]);
                     tabObj[row][block].containsNumber = 0;
                     recommencer++;
                     console.log("DEPLACEMENT", tabObj[row][block], [row, block], tabObj[row + y][block + x], [row + y, block + x]);
+                    deplacement = true;
                 }
             }
         }
     }
-    blockAleatoire();
+    if (deplacement)
+        blockAleatoire();
     generateGrid();
 }
 function dirBas(row, block) {

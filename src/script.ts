@@ -43,7 +43,7 @@ function generateGrid() {
             if (block.isVide) {
                 carre.className = "blockVide";
             } else {
-                carre.className = "block";
+                carre.className = `block b${String(block.containsNumber)}`;
                 const p = document.createElement("p");
                 p.textContent = String(block.containsNumber);
                 carre.append(p);
@@ -83,7 +83,7 @@ function deplacer(callback: (row: number, block: number) => boolean, y: number, 
     gameContainer.innerHTML = "";
     let recommencer: number = 1;
     let deplacement = false;
-    let addition = [];
+    const dejaFusione = []; // Pour ne pas readditionner meme element
     while (recommencer > 0) {
         recommencer = 0;
         for (let row = 0; row < 4; row++) {
